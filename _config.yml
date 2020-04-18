@@ -1,7 +1,7 @@
 # --- General options --- #
 
 # Name of website
-title: Rishikeshwar Muthuram
+title: @rishikeshwar
 
 # Short description of your site
 description: All about myself and my work
@@ -21,7 +21,7 @@ description: All about myself and my work
 # List of links in the navigation bar
 navbar-links:
   About Me: "aboutme"
-  Resources:
+  Projects:
     - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
     - Learn markdown: "http://www.markdowntutorial.com/"
   Author's home: "http://deanattali.com"
