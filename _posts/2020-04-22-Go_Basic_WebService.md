@@ -15,7 +15,7 @@ It is a start to learn how Golang works and handles such Web requests.
 
 ## An Introduction to how the whole Application works
 
-Below is a pictorial representaion of how the  **Model << >> View << >> Controller**  work hand in hand.
+Below is a pictorial _representaion_ *of* **how** the  **Model << >> View << >> Controller**  work hand in hand.
 
 ![MVC](/img/model-view-controller.png){: .center-block :}
 
