@@ -1,21 +1,21 @@
 ---
 layout: post
 title: Web Application using Go
-subtitle: --------------------------
 gh-repo: rishikeshwar/Go-Basic-WebService
 gh-badge: [star, fork, follow]
 tags: [Go]
 comments: true
 ---
 
-The Intent of the Application to host a Basic Web Service, reposponding to a couple of static URL paths and how the requests are handled accordingly.
-It is a start to learn how Golang works and handles such Web requests.
+The Intent of this Application is to host a Basic Web Service, reposponding to a couple of static URL paths and how the requests are handled accordingly.
 
-**Lets get Started**
+It is a start to learn how Golang works and how a simple web application can be made to work.
 
-## An Introduction to how the whole Application works
+## **Lets get Started**
 
-Below is a pictorial representaion of how the  **Model << >> View << >> Controller**  work hand in hand.
+### The Application itself in a bigger picture
+
+Below is a pictorial representaion of  **Model << >> View << >> Controller**  in action.
 
 ![MVC](/img/model-view-controller.png){: .center-block :}
 
