@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Golang Basic Web Application
+title: Web Application using Go
 subtitle: --------------------------
 gh-repo: rishikeshwar/Go-Basic-WebService
 gh-badge: [star, fork, follow]
-tags: [GO]
+tags: [Go]
 comments: true
 ---
 
@@ -13,7 +13,11 @@ It is a start to learn how Golang works and handles such Web requests.
 
 **Lets get Started**
 
-## Here is a secondary heading
+## An Introduction to how the whole Application works
+
+Below is a pictorial representaion of the Model << >> View << >> Controller work hand in hand.
+
+![MVC](/img/finalsquareimage.png)
 
 Here's a useless table:
 
