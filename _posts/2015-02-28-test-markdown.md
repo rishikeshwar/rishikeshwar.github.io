@@ -1,16 +1,17 @@
 ---
 layout: post
-title: Test markdown
-subtitle: Each post also has a subtitle
-gh-repo: daattali/beautiful-jekyll
+title: Golang Basic Web Application
+subtitle: --------------------------
+gh-repo: rishikeshwar/Go-Basic-WebService
 gh-badge: [star, fork, follow]
-tags: [test]
+tags: [GO]
 comments: true
 ---
 
-You can write regular [markdown](http://markdowntutorial.com/) here and Jekyll will automatically convert it to a nice webpage.  I strongly encourage you to [take 5 minutes to learn how to write in markdown](http://markdowntutorial.com/) - it'll teach you how to transform regular text into bold/italics/headings/tables/etc.
+The Intent of the Application to host a Basic Web Service, reposponding to a couple of static URL paths and how the requests are handled accordingly.
+It is a start to learn how Golang works and handles such Web requests.
 
-**Here is some bold text**
+**Lets get Started**
 
 ## Here is a secondary heading
 
