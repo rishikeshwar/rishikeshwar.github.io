@@ -17,7 +17,19 @@ It is a start to learn how Golang works and how a simple web application can be 
 
 Below is a pictorial representaion of  **Model << >> View << >> Controller**  in action.
 
+
 ![MVC](/img/model-view-controller.png){: .center-block :}
+
+
+<b>Model: </b> The model can be viewed as pure application level data. There is no logic or processing that is present at this level.
+
+<b>View: </b> This View is the place which is presented to the user. The job of View is to display the content without the understanding of what it means or what the user can do with it.
+
+<b>Controller: </b> The Controller works between the View and the Model. It listens to events and responds by executing certain section of code which are triggered by the View (or any other external event). Since the view and the model are connected through a notification mechanism, the result of this action is then automatically reflected in the view.
+
+ [Reference](https://www.geeksforgeeks.org/mvc-design-pattern/)
+
+
 
 Here's a useless table:
 
