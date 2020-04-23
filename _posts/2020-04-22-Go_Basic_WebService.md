@@ -41,8 +41,7 @@ The Application serves the get, post, put and delete requests that are defnined 
 
 
 **main.go**
-{% highlight javascript linenos %}
-```go
+{% highlight go linenos %}
 package main
 
 import (
@@ -55,7 +54,6 @@ func main() {
 	controllers.RegisterControllers()
 	http.ListenAndServe(":3000", nil)
 }
-```
 {% endhighlight %}
 
 
