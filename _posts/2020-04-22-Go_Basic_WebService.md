@@ -58,7 +58,8 @@ func main() {
 
 
 The Model folder contains 1 file /models/user.go
-**/models/user.go:** The below file handles the when a new user is created, updated, requested or deleted. 
+
+**/models/user.go:** The below file handles requests when a new user is created, updated, requested or deleted. 
 
 {% highlight go linenos %}
 package models
@@ -129,53 +130,177 @@ func RemoveUserByID(id int) error {
 {% endhighlight %}
 
 
+The Controllers folder contains 2 files /controllers/user.go
 
+**/controllers/user.go:** The below file handles the get, post, put and delete requests and calls in the necessary functions defined under models 
 
-Here's a useless table:
+{% highlight go linenos %}
+package controllers
 
-| Number | Next number | Previous number |
-| :------ |:--- | :--- |
-| Five | Six | Four |
-| Ten | Eleven | Nine |
-| Seven | Eight | Six |
-| Two | Three | One |
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"regexp"
+	"strconv"
 
+	"github.com/rishikeshwar/webservice/models"
+)
 
-How about a yummy crepe?
-
-![Crepe](https://s3-media3.fl.yelpcdn.com/bphoto/cQ1Yoa75m2yUFFbY2xwuqw/348s.jpg)
-
-It can also be centered!
-
-![Crepe](https://s3-media3.fl.yelpcdn.com/bphoto/cQ1Yoa75m2yUFFbY2xwuqw/348s.jpg){: .center-block :}
-
-Here's a code chunk:
-
-~~~
-var foo = function(x) {
-  return(x + 5);
+type userController struct {
+	userIDPattern *regexp.Regexp
 }
-foo(3)
-~~~
 
-And here is the same code with syntax highlighting:
+func (uc userController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path == "/users" {
 
+		switch r.Method {
+		case http.MethodGet:
+			uc.getAll(w, r)
+		case http.MethodPost:
+			uc.post(w, r)
+		default:
+			w.WriteHeader(http.StatusNotImplemented)
+		}
 
-```javascript
-var foo = function(x) {
-  return(x + 5);
+	} else {
+		matches := uc.userIDPattern.FindStringSubmatch(r.URL.Path)
+
+		if len(matches) == 0 {
+			w.WriteHeader(http.StatusNotFound)
+		}
+		fmt.Println(matches)
+		id, err := strconv.Atoi(matches[1])
+
+		if err != nil {
+			w.WriteHeader(http.StatusNotFound)
+		}
+
+		switch r.Method {
+		case http.MethodGet:
+			uc.get(id, w)
+		case http.MethodPut:
+			uc.put(id, w, r)
+		case http.MethodDelete:
+			uc.delete(id, w)
+		default:
+			w.WriteHeader(http.StatusNotImplemented)
+		}
+
+	}
 }
-foo(3)
-```
 
-And here is the same code yet again but with line numbers:
-
-{% highlight javascript linenos %}
-var foo = function(x) {
-  return(x + 5);
+func (uc *userController) getAll(w http.ResponseWriter, r *http.Request) {
+	encodeResponseAsJson(models.GetUsers(), w)
 }
-foo(3)
+
+func (uc *userController) get(id int, w http.ResponseWriter) {
+	u, err := models.GetUserByID(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	encodeResponseAsJson(u, w)
+}
+
+func (uc *userController) post(w http.ResponseWriter, r *http.Request) {
+	u, err := uc.parseRequest(r)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("could not parse the User object"))
+		return
+	}
+
+	u, err = models.AddUser(u)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("not coming"))
+		return
+	}
+
+	encodeResponseAsJson(u, w)
+}
+
+func (uc *userController) put(id int, w http.ResponseWriter, r *http.Request) {
+	u, err := uc.parseRequest(r)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("could not parse the User object"))
+		return
+	}
+
+	if id != u.ID {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("ID of submitted user must watch ID in URL"))
+		return
+	}
+
+	u, err = models.UpdateUser(u)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	encodeResponseAsJson(u, w)
+}
+
+func (uc *userController) delete(id int, w http.ResponseWriter) {
+	err := models.RemoveUserByID(id)
+
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (uc *userController) parseRequest(r *http.Request) (models.User, error) {
+	dec := json.NewDecoder(r.Body)
+	var u models.User
+
+	err := dec.Decode(&u)
+	if err != nil {
+		return models.User{}, err
+	}
+	return u, nil
+}
+
+func newUserController() *userController {
+	return &userController{
+		userIDPattern: regexp.MustCompile(`^/users/(\d+)/?`),
+	}
+}
 {% endhighlight %}
+
+
+**/controllers/front.go:** The below file handles the static paths that are defined and which paths to be honored
+
+{% highlight go linenos %}
+package controllers
+
+import (
+	"encoding/json"
+	"io"
+	"net/http"
+)
+
+func RegisterControllers() {
+	uc := newUserController()
+
+	http.Handle("/users", *uc)
+	http.Handle("/users/", *uc)
+}
+
+func encodeResponseAsJson(data interface{}, w io.Writer) {
+	enc := json.NewEncoder(w)
+	enc.Encode(data)
+}
+{% endhighlight %}
+
+
 
 ## Boxes
 You can add notification, warning and error boxes like this:
