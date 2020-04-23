@@ -35,12 +35,12 @@ Below is a pictorial representaion of  **Model << >> View << >> Controller**  in
 
 It works based on exposing the port number that is defind in _main.go_ to allow and serve HTTP Requests.
 
-The Motive is to create a simple locally stored database of users with basic information such as ID, FirstName and LastName
+The motive is to create a simple locally stored database of users with basic information such as ID, FirstName and LastName
 
 The Application serves the get, post, put and delete requests that are defnined in the controller section. We do not have a View in this project as the intention is not to create an UI.
 
 
-**main.go**
+**/main.go:** Calling the controlers to register it and exposing the port number 3000 to Listen and Serve
 {% highlight go linenos %}
 package main
 
@@ -55,6 +55,79 @@ func main() {
 	http.ListenAndServe(":3000", nil)
 }
 {% endhighlight %}
+
+
+The Model folder contains 1 file /models/user.go
+**/models/user.go:** The below file handles the when a new user is created, updated, requested or deleted. 
+
+{% highlight go linenos %}
+package models
+
+import (
+	"errors"
+	"fmt"
+)
+
+type User struct {
+	ID        int
+	FirstName string
+	LastName  string
+}
+
+var (
+	users  []*User
+	nextID = 1
+)
+
+func GetUsers() []*User {
+	return users
+}
+
+func AddUser(u User) (User, error) {
+
+	if u.ID != 0 {
+		return User{}, errors.New("it is an error")
+	}
+
+	u.ID = nextID
+	nextID++
+	users = append(users, &u)
+	return u, nil
+}
+
+func GetUserByID(id int) (User, error) {
+	for _, u := range users {
+		if u.ID == id {
+			return *u, nil
+		}
+	}
+
+	return User{}, fmt.Errorf("user with id '%v' not found", id)
+}
+
+func UpdateUser(u User) (User, error) {
+	for i, candidate := range users {
+		if candidate.ID == u.ID {
+			users[i] = &u
+			return u, nil
+		}
+	}
+
+	return User{}, fmt.Errorf("user with id '%v' not found", u.ID)
+}
+
+func RemoveUserByID(id int) error {
+	for i, u := range users {
+		if u.ID == id {
+			users = append(users[:i], users[i+1:]...)
+			return nil
+		}
+	}
+
+	return fmt.Errorf("user with id '%v' not found", id)
+}
+{% endhighlight %}
+
 
 
 
