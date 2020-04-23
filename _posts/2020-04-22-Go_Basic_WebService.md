@@ -37,9 +37,11 @@ It works based on exposing the port number that is defind in _main.go_ to allow 
 
 The Motive is to create a simple locally stored database of users with basic information such as ID, FirstName and LastName
 
-The Application serves the basic get, post, put and delete requests that are defnined in the controller section.
+The Application serves the get, post, put and delete requests that are defnined in the controller section. We do not have a View in this project as the intention is not to create an UI.
+
 
 **main.go**
+{% highlight javascript linenos %}
 ```go
 package main
 
@@ -54,6 +56,8 @@ func main() {
 	http.ListenAndServe(":3000", nil)
 }
 ```
+{% endhighlight %}
+
 
 
 Here's a useless table:
@@ -84,6 +88,7 @@ foo(3)
 ~~~
 
 And here is the same code with syntax highlighting:
+
 
 ```javascript
 var foo = function(x) {
